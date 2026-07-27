@@ -1,6 +1,6 @@
 {
   "name": "ssid-mcp",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "mcpName": "ai.ssid/ssid-mcp",
   "description": "ssid.ai MCP server — identify the manufacturer behind any MAC address, with randomized-address detection. Backed by ssid.ai.",
   "author": "ssid.ai (Drumworks Ventures FZ)",

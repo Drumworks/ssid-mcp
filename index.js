@@ -4,11 +4,9 @@
  *
  * Unlike the in-repo mcp/server.ts (which reads the local DB), this package calls
  * the HOSTED public API (https://ssid.ai/api/v1/lookup) so `npx -y ssid-mcp` works
- * with zero local data. One tool: lookup_mac. No API key needed for the free tier;
- * set SSID_API_KEY to raise limits.
- *
- * NOT YET PUBLISHED — publishing to npm + the MCP registries (growth G1) is gated on
- * the G19 paid-agent validation and the 6201 license. This is publish-ready.
+ * with zero local data. Two tools: lookup_mac (read) and submit_correction (write,
+ * queued for human/compile-engine verification — never auto-applied). No API key
+ * needed for the free tier; set SSID_API_KEY to raise limits.
  */
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -23,6 +21,21 @@ async function lookup(mac) {
   const res = await fetch(url, { headers });
   if (!res.ok) throw new Error(`SSID API error ${res.status}`);
   return res.json();
+}
+
+async function submitCorrection({ slug, field, proposedValue, sourceUrl }) {
+  const res = await fetch(`${BASE}/api/corrections`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ slug, field, proposedValue, sourceUrl }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || data.ok === false) {
+    throw new Error(
+      data.error || `Correction rejected (HTTP ${res.status}) — check field name and that sourceUrl is an official https page.`,
+    );
+  }
+  return data;
 }
 
 async function main() {
@@ -42,6 +55,31 @@ async function main() {
         return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
       } catch (e) {
         return { content: [{ type: "text", text: `Lookup failed: ${e.message}` }], isError: true };
+      }
+    },
+  );
+
+  server.registerTool(
+    "submit_correction",
+    {
+      title: "Propose a router default-login correction",
+      description:
+        "Propose a fix to a router model's default gateway IP, username, password, credential type, or reset steps on ssid.ai. Requires an official manufacturer source URL (never an aggregator/forum). Queued for verification — never applied automatically. Use the router's slug from ssid.ai/routers/<slug>.",
+      inputSchema: {
+        slug: z.string().describe("The router's ssid.ai slug, e.g. 'tp-link-archer-ax55'"),
+        field: z
+          .enum(["defaultGatewayIp", "defaultUsername", "defaultPassword", "credType", "resetSteps"])
+          .describe("Which field is wrong"),
+        proposedValue: z.string().max(500).describe("The correct value, per the cited source"),
+        sourceUrl: z.string().url().describe("Official https manufacturer source confirming the correct value"),
+      },
+    },
+    async (input) => {
+      try {
+        const data = await submitCorrection(input);
+        return { content: [{ type: "text", text: JSON.stringify(data, null, 2) }] };
+      } catch (e) {
+        return { content: [{ type: "text", text: `Submission failed: ${e.message}` }], isError: true };
       }
     },
   );

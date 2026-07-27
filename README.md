@@ -16,7 +16,7 @@ Add to any MCP-capable host (Claude Desktop, Cursor, etc.):
 }
 ```
 
-## Tool
+## Tools
 
 - **`lookup_mac(mac)`** → vendor, OUI, `kind` (universal / randomized / multicast /
   invalid), `randomized` flag, confidence and the source.
@@ -24,6 +24,22 @@ Add to any MCP-capable host (Claude Desktop, Cursor, etc.):
 ```
 lookup_mac("F4:F5:E8:11:22:33")
 → { "vendor": { "organization": "Google, Inc." }, "kind": "universal", "randomized": false, ... }
+```
+
+- **`submit_correction(slug, field, proposedValue, sourceUrl)`** → propose a fix to a
+  router model's default login IP, username, password, credential type, or reset
+  steps. Requires an official manufacturer `sourceUrl` — never applied automatically,
+  queued for verification against that source. The contribution loop is open to
+  agents on the same terms as humans.
+
+```
+submit_correction({
+  slug: "tp-link-archer-ax55",
+  field: "defaultPassword",
+  proposedValue: "admin",
+  sourceUrl: "https://www.tp-link.com/us/support/faq/..."
+})
+→ { "ok": true, "status": "pending" }
 ```
 
 ## What else ssid.ai covers
