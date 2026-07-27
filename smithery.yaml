@@ -1,0 +1,16 @@
+# Smithery registry config for ssid-mcp.
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      ssidApiKey:
+        type: string
+        title: ssid.ai API key (optional)
+        description: Raises rate limits. Free tier needs none. Get one at https://ssid.ai/api-docs
+  commandFunction: |
+    (config) => ({
+      command: 'npx',
+      args: ['-y', 'ssid-mcp'],
+      env: config.ssidApiKey ? { SSID_API_KEY: config.ssidApiKey } : {}
+    })
