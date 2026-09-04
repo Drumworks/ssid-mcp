@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "ai.ssid/ssid-mcp",
-  "description": "Manufacturer-cited router default logins and the Router Compliance Index (409 models), plus MAC/OUI vendor lookup with randomized-address detection. Free, no API key.",
+  "description": "Manufacturer-cited router default logins and compliance check, plus MAC/OUI vendor lookup. Free.",
   "repository": {
     "url": "https://github.com/Drumworks/ssid-mcp",
     "source": "github"
