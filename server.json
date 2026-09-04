@@ -1,0 +1,28 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.ssid/ssid-mcp",
+  "description": "Manufacturer-cited router default logins and the Router Compliance Index (409 models), plus MAC/OUI vendor lookup with randomized-address detection. Free, no API key.",
+  "repository": {
+    "url": "https://github.com/Drumworks/ssid-mcp",
+    "source": "github"
+  },
+  "version": "0.3.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "ssid-mcp",
+      "version": "0.3.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "description": "Optional \u2014 raises the free-tier rate limit. Not required to use the server.",
+          "format": "string",
+          "isSecret": true,
+          "name": "SSID_API_KEY"
+        }
+      ]
+    }
+  ]
+}

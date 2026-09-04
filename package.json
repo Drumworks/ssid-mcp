@@ -1,8 +1,8 @@
 {
   "name": "ssid-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "mcpName": "ai.ssid/ssid-mcp",
-  "description": "ssid.ai MCP server — identify the manufacturer behind any MAC address, with randomized-address detection. Backed by ssid.ai.",
+  "description": "ssid.ai MCP server: manufacturer-cited router default logins and the Router Compliance Index (409 models), plus MAC/OUI vendor lookup with randomized-address detection. Free, no API key.",
   "author": "ssid.ai (Drumworks Ventures FZ)",
   "license": "MIT",
   "publishConfig": {
@@ -14,7 +14,8 @@
   },
   "files": [
     "index.js",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "mcp",
@@ -23,7 +24,12 @@
     "oui",
     "network",
     "device-identity",
-    "ssid"
+    "ssid",
+    "router-default-password",
+    "default-credentials",
+    "compliance",
+    "psti",
+    "cyber-resilience-act"
   ],
   "homepage": "https://ssid.ai",
   "repository": {
