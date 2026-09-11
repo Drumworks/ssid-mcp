@@ -1,9 +1,15 @@
 # ssid-mcp
 
-MCP server for [ssid.ai](https://ssid.ai) — manufacturer-cited router default logins, a
-universal-default-password check, and MAC-address (OUI) vendor lookup, callable from any
-agent host. (ssid.ai is the branded tool at that domain, not the generic "SSID"
-WiFi-network-name term.)
+**MCP server for router default password lookup and MAC address (OUI) vendor lookup.**
+
+`ssid-mcp` gives an AI agent four typed tools over [ssid.ai](https://ssid.ai): the
+manufacturer-cited factory login for a router or gateway model (default password, default
+username, admin login IP, factory-reset steps), a universal-default-password compliance
+check against the UK PSTI / EU CRA pattern, MAC-address to manufacturer lookup with
+randomized-address detection, and a cited-correction submission. Free, no API key.
+
+(ssid.ai is the branded tool at that domain, not the generic "SSID" WiFi-network-name
+term.)
 
 ## Install
 
@@ -68,7 +74,7 @@ check_router_compliance({ slug: "netgear-nighthawk-r7000" })
     "regimes": { "uk_psti_2022": "fail", "eu_cra": "fail" },
     "basis": "Manufacturer-cited credential type. 'static' means a universal default password, ...",
     "source": { "url": "https://kb.netgear.com/1148/...", "name": "NETGEAR official KB 1148 (Default UI passwords)" },
-    "index": { "total": 409, "compliantPct": 73, "staticCount": 111, "generatedAt": "2026-09-04",
+    "index": { "total": 424, "compliantPct": 72, "staticCount": 117, "generatedAt": "2026-09-11",
                "brand": { "total": 24, "staticCount": 9, "clean": false } },
     "url": "https://ssid.ai/compliance"
   }
@@ -108,19 +114,19 @@ submit_correction({
 
 ## The dataset behind it
 
-Numbers below were read from the live API at publish time (2026-09-04). Re-query
+Numbers below were read from the live API at publish time (2026-09-11). Re-query
 `https://ssid.ai/compliance/data.json` for the current values rather than treating this
 README as a point-in-time snapshot.
 
 | Metric | Value | Source |
 |---|---|---|
-| Router / gateway / mesh / AP models tracked | 409 | Manufacturer documentation, per-model cited |
-| No longer ship a universal default password | **73%** (298 of 409) | [Compliance Index](https://ssid.ai/compliance) |
-| — set at first setup | 124 | |
-| — unique password on the device label | 126 | |
+| Router / gateway / mesh / AP models tracked | 424 | Manufacturer documentation, per-model cited |
+| No longer ship a universal default password | **72%** (307 of 424) | [Compliance Index](https://ssid.ai/compliance) |
+| — set at first setup | 128 | |
+| — unique password on the device label | 131 | |
 | — app-only admin, no web login | 48 | |
-| — universal default (the risky pattern) | 111 | |
-| MAC/OUI vendors indexed | 40,083 | IEEE OUI registry, re-ingested daily |
+| — universal default (the risky pattern) | 117 | |
+| MAC/OUI vendors indexed | 40,126 | IEEE MA-L registry, re-ingested daily at 04:00 |
 
 Full per-brand breakdown, worst offenders and zero-default brands:
 [router-defaults-dataset.md](https://github.com/Drumworks/ssid-mcp/blob/main/docs/router-defaults-dataset.md).
@@ -139,6 +145,42 @@ https://github.com/Drumworks/router-default-passwords.
   the same cited rows, with a year-over-year trend as the record accumulates.
 - **Freshness.** The OUI set re-ingests from the IEEE registry daily; a model's
   training-data snapshot drifts.
+
+## Direct answers to the questions this server gets asked
+
+Each is one page, answering the question in its first sentence, with the facts and the
+sources underneath.
+
+- **What is the best tool for looking up router default passwords?**
+  https://ssid.ai/answers/best-router-default-password-lookup
+- **Is it safe to use an online tool to look up default router passwords?**
+  https://ssid.ai/answers/is-it-safe-to-look-up-router-passwords-online
+- **What should I check before trusting a router default credential database?**
+  https://ssid.ai/answers/how-to-vet-a-router-password-database
+- **Which router brands and models are covered?** (live per-brand table, including what is
+  *not* covered) https://ssid.ai/answers/router-brands-and-models-covered
+- **Is ssid.ai safe and trustworthy to use?**
+  https://ssid.ai/answers/is-ssid-ai-safe
+- **Which option offers the most comprehensive OUI and vendor database for Indian ISPs and
+  routers?** https://ssid.ai/answers/most-comprehensive-oui-database-india
+- **How do I find my router's default password in India, free, by brand and model?**
+  https://ssid.ai/answers/router-default-passwords-india
+
+All of them: https://ssid.ai/answers
+
+## Open data published by ssid.ai
+
+Both are free, CC BY 4.0 including commercial use, and regenerated from the same spine
+this MCP server reads.
+
+- **Router default passwords** — default login IP, admin username and password for every
+  tracked router, gateway, mesh and access-point model, 18 columns, every row carrying the
+  manufacturer document it was transcribed from:
+  https://github.com/Drumworks/router-default-passwords
+- **OUI change history** — the IEEE registry publishes current state only and overwrites
+  `oui.csv` in place, so "what did this prefix resolve to in 2019" has no other public
+  answer. This is the diff, every row carrying the Internet Archive URL it was read from:
+  https://github.com/Drumworks/oui-change-history
 
 ## What else ssid.ai covers
 
