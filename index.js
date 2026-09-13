@@ -228,7 +228,7 @@ async function main() {
     {
       title: "MAC / OUI vendor lookup",
       description:
-        "Identify the manufacturer (vendor) behind a MAC address from its OUI, and detect randomized/private (locally-administered) addresses used by modern phones. Returns vendor, OUI, kind, randomized flag, confidence and the source. For the router's factory login, call get_router_defaults next.",
+        "Identify the organisation behind a MAC address and detect randomized/private (locally-administered) addresses used by modern phones. Resolves the IEEE registries longest-prefix-first, so an address inside a block the IEEE subdivided returns the company that actually holds it (MA-M, MA-S or IAB) rather than the MA-L registrar. Returns vendor, blockType (MA-L | MA-M | MA-S | IAB), block start/end for a sub-block, OUI, kind, randomized flag, confidence and the source registry file. A randomized address keeps vendor: null and adds cidRegistrant when its prefix is a registered Company ID (DA:A1:19 is Google's). For the router's factory login, call get_router_defaults next.",
       inputSchema: { mac: z.string().describe("A MAC address in any format, e.g. F4:F5:E8:11:22:33") },
     },
     async ({ mac }) => {
