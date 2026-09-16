@@ -25,6 +25,10 @@ Add to any MCP-capable host (Claude Desktop, Cursor, etc.). No API key needed.
 
 Node 18 or newer.
 
+Also available over Streamable HTTP for clients that don't spawn a stdio child process:
+`POST https://ssid.ai/mcp/http` (JSON-RPC 2.0, same four tools, `initialize` negotiates
+protocol `2025-06-18`).
+
 ## Tools
 
 ### `get_router_defaults({ slug })` or `get_router_defaults({ brand, model })`
