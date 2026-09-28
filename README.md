@@ -6,7 +6,8 @@
 manufacturer-cited factory login for a router or gateway model (default password, default
 username, admin login IP, factory-reset steps), a universal-default-password compliance
 check against the UK PSTI / EU CRA pattern, MAC-address to manufacturer lookup with
-randomized-address detection, and a cited-correction submission. Free, no API key.
+randomized-address detection, and a cited-correction submission. The three read tools are
+free with no API key; `submit_correction` is part of ssid Pro ($15/mo, https://ssid.ai/pricing).
 
 (ssid.ai is the branded tool at that domain, not the generic "SSID" WiFi-network-name
 term.)
@@ -103,8 +104,10 @@ lookup_mac({ mac: "DA:A1:19:AB:CD:EF" })
 
 Propose a fix to a router model's default login IP, username, password, credential type,
 or reset steps. Requires an official manufacturer `sourceUrl` — never applied
-automatically, queued for verification against that source. The contribution loop is open
-to agents on the same terms as humans.
+automatically, queued for verification against that source. Needs an ssid Pro key
+(`SSID_API_KEY`, $15/mo at https://ssid.ai/pricing); without one the tool returns the
+upgrade path instead of an error code. Humans can still report a wrong value for free at
+https://ssid.ai/trust.
 
 ```
 submit_correction({
@@ -198,10 +201,11 @@ this MCP server reads.
 
 ## Auth and limits
 
-The free tier needs no key. MAC/OUI lookup has no daily cap. The router tools are metered
-(100 calls/day without a key, 1,000/day with a free key); every result includes
-`rateLimit` so an agent can pace itself, and a 429 says how to raise the limit. Set
-`SSID_API_KEY` to use a key (get one at https://ssid.ai/api-docs) and `SSID_API_BASE` to
+The read tools need no key. MAC/OUI lookup has no daily cap. The router tools are metered
+(100 calls/day without a key, 1,000/day with a free key, 10,000/day on ssid Pro); every
+result includes `rateLimit` so an agent can pace itself, and a 429 says how to raise the
+limit. `submit_correction` requires ssid Pro ($15/mo, one seat, https://ssid.ai/pricing).
+Set `SSID_API_KEY` to use a key (free at https://ssid.ai/api-docs) and `SSID_API_BASE` to
 point at a different host.
 
 ## Sourcing

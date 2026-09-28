@@ -9,9 +9,10 @@
  *   get_router_defaults      manufacturer-cited factory login for a router model (read)
  *   check_router_compliance  does the model still ship a universal default password (read)
  *   lookup_mac               MAC/OUI → vendor, with randomized-address detection (read)
- *   submit_correction        propose a fix, queued for verification — never auto-applied (write)
+ *   submit_correction        propose a fix, queued for verification — never auto-applied (write, Pro)
  *
- * No API key needed for the free tier; set SSID_API_KEY to raise limits.
+ * The three read tools need no API key. submit_correction needs an ssid Pro key
+ * ($15/mo, https://ssid.ai/pricing) in SSID_API_KEY, which also raises the rate limits.
  */
 import { createRequire } from "node:module";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -115,6 +116,9 @@ async function submitCorrection({ slug, field, proposedValue, sourceUrl }) {
     body: JSON.stringify({ slug, field, proposedValue, sourceUrl }),
   });
   const data = await body(res);
+  // 402 = no Pro key. The server's text already says what to do; pass it through verbatim
+  // so the agent can relay the upgrade path to its human instead of guessing.
+  if (res.status === 402) throw new Error([data.error, data.support && `Support: ${data.support}`].filter(Boolean).join(" "));
   if (!res.ok || data.ok === false) {
     throw new Error(
       data.error || `Correction rejected (HTTP ${res.status}) — check field name and that sourceUrl is an official https page.`,
@@ -245,7 +249,7 @@ async function main() {
     {
       title: "Propose a router default-login correction",
       description:
-        "Propose a fix to a router model's default gateway IP, username, password, credential type, or reset steps on ssid.ai. Requires an official manufacturer source URL (never an aggregator/forum). Queued for verification — never applied automatically. Use the router's slug from ssid.ai/routers/<slug>.",
+        "Propose a fix to a router model's default gateway IP, username, password, credential type, or reset steps on ssid.ai. Requires an official manufacturer source URL (never an aggregator/forum). Queued for verification — never applied automatically. Use the router's slug from ssid.ai/routers/<slug>. Requires an ssid Pro key ($15/mo, ssid.ai/pricing) sent as SSID_API_KEY or a Bearer token; the three read tools stay free.",
       inputSchema: {
         slug: z.string().describe("The router's ssid.ai slug, e.g. 'tp-link-archer-ax55'"),
         field: z

@@ -1,8 +1,8 @@
 {
   "name": "ssid-mcp",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "mcpName": "ai.ssid/ssid-mcp",
-  "description": "ssid.ai MCP server: manufacturer-cited router default logins and the Router Compliance Index (409 models), plus MAC/OUI vendor lookup with randomized-address detection. Free, no API key.",
+  "description": "ssid.ai MCP server: manufacturer-cited router default logins and the Router Compliance Index (409 models), plus MAC/OUI vendor lookup with randomized-address detection. Read tools free, no API key; submit_correction on ssid Pro.",
   "author": "ssid.ai (Drumworks Ventures FZ)",
   "license": "MIT",
   "publishConfig": {
