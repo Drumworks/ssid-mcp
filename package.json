@@ -2,7 +2,7 @@
   "name": "ssid-mcp",
   "version": "0.4.1",
   "mcpName": "ai.ssid/ssid-mcp",
-  "description": "ssid.ai MCP server: manufacturer-cited router default logins and the Router Compliance Index (409 models), plus MAC/OUI vendor lookup with randomized-address detection. Read tools free, no API key; submit_correction on ssid Pro.",
+  "description": "ssid.ai MCP server: manufacturer-cited router default logins and the Router Compliance Index, plus MAC/OUI vendor lookup with randomized-address detection. Read tools free, no API key; submit_correction on ssid Pro.",
   "author": "ssid.ai (Drumworks Ventures FZ)",
   "license": "MIT",
   "publishConfig": {
@@ -42,5 +42,9 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "zod": "^3.23.0"
+  },
+  "scripts": {
+    "check:counts": "node scripts/sync-counts.mjs --check",
+    "sync:counts": "node scripts/sync-counts.mjs"
   }
 }
